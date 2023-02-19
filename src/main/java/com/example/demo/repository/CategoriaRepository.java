@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import com.example.demo.entity.Categoria;
 
-@Repository
+@Repository("categoriaRepository")
 public interface CategoriaRepository extends JpaRepository<Categoria, Serializable> {
 	
 }

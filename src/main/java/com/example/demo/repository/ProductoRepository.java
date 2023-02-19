@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.example.demo.entity.Categoria;
 import com.example.demo.entity.Producto;
 
-@Repository
+@Repository("productoRepository")
 public interface ProductoRepository extends JpaRepository<Producto, Serializable> {
 	List<Producto> findByCategoria(Categoria categoria);
 	

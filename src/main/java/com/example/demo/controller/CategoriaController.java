@@ -34,10 +34,8 @@ public class CategoriaController {
         return categoriaService.findCategoria(id);
     }
 
-    @PutMapping("/categories/{id}")
-    public Categoria actualizarCategoria(@PathVariable(value = "id") Long id, @RequestBody CategoriaModel categoriaModel) {
-    	Categoria categoria = categoriaService.findCategoria(id);
-    	// Mirar esto con alberto
+    @PutMapping("/categories")
+    public Categoria actualizarCategoria(@RequestBody CategoriaModel categoriaModel) {
         return categoriaService.updateCategoria(categoriaModel);
     }
 
