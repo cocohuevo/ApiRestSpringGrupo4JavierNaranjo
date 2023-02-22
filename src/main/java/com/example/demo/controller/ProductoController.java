@@ -72,7 +72,7 @@ public class ProductoController {
         return ResponseEntity.ok().build();
     }
     
-    @PostMapping("/users/{username}/favorites/{productId}")
+    @PostMapping("/users/{username}/favoritos/{productId}")
     public ResponseEntity<?> agregarFavorito(@PathVariable(value = "username") String username, @PathVariable(value = "productId") Long productId) {
         User user = userService.findUsuario(username);
         ProductoModel productoModel = productoService.findProducto(productId);
