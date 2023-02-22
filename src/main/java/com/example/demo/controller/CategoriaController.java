@@ -24,7 +24,7 @@ public class CategoriaController {
     @Qualifier("categoriaService")
     private CategoriaService categoriaService;
 
-    @PostMapping("/categorie")
+    @PostMapping("/categories")
     public Categoria crearCategoria(@RequestBody CategoriaModel categoriaModel) {
         return categoriaService.addCategoria(categoriaModel);
     }
