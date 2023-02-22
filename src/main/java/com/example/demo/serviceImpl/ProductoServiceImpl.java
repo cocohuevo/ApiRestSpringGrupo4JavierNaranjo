@@ -27,26 +27,25 @@ public class ProductoServiceImpl implements ProductoService{
     @Qualifier("categoriaService")
     private CategoriaService categoriaService;
 
-    public Producto addProducto(ProductoModel productoModel) {
-        return productoRepository.save(transform(productoModel));
+    public ProductoModel addProducto(ProductoModel productoModel) {
+        return transform(productoRepository.save(transform(productoModel)));
     }
 
-    public List<Producto> findProductosByCategoria(CategoriaModel categoriaModel) {
-        return productoRepository.findByCategoria(categoriaService.transform(categoriaModel));
+    public List<ProductoModel> findProductosByCategoria(CategoriaModel categoriaModel) {
+        return productoRepository.findByCategoria(categoriaService.transform(categoriaModel)).stream().map(x->transform(x)).toList();
     }
 
-    public Producto findProducto(Long id) {
-    	return productoRepository.findById(id)
-    	        .orElseThrow(() -> new RuntimeException("No se encontró el producto con ID " + id));
+    public ProductoModel findProducto(Long id) {
+    	return transform(productoRepository.findById(id)
+    	        .orElseThrow(() -> new RuntimeException("No se encontró el producto con ID " + id)));
     }
     
-    public Producto updateProducto(ProductoModel productoModel) {
-		return productoRepository.save(transform(productoModel));
+    public ProductoModel updateProducto(ProductoModel productoModel) {
+		return transform(productoRepository.save(transform(productoModel)));
 	}
     
     public void removeProducto(Long id) {
-        Producto producto = findProducto(id);
-        productoRepository.delete(producto);
+        productoRepository.delete(transform(findProducto(id)));
     }
 
 	public Producto transform(ProductoModel productoModel) {
@@ -57,5 +56,9 @@ public class ProductoServiceImpl implements ProductoService{
 	public ProductoModel transform(Producto producto) {
 		ModelMapper modelMapper=new ModelMapper();
 		return modelMapper.map(producto, ProductoModel.class);
+	}
+
+	public List<ProductoModel> listProductos() {
+		return productoRepository.findAll().stream().map(x->transform(x)).toList();
 	}
 }

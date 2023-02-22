@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.entity.Categoria;
 import com.example.demo.entity.Producto;
+import com.example.demo.model.CategoriaModel;
 import com.example.demo.model.ProductoModel;
 import com.example.demo.service.CategoriaService;
 import com.example.demo.service.ProductoService;
@@ -33,24 +34,29 @@ public class ProductoController {
     private CategoriaService categoriaService;
     
     @PostMapping("/categories/{categoriaId}/product")
-    public Producto crearProducto(@PathVariable(value = "categoriaId") Long categoriaId, @RequestBody ProductoModel productoModel) {
+    public ProductoModel crearProducto(@PathVariable(value = "categoriaId") Long categoriaId, @RequestBody ProductoModel productoModel) {
         productoModel.setCategoriaId(categoriaId);
         return productoService.addProducto(productoModel);
     }
 
     @GetMapping("/categories/{categoriaId}/products")
-    public List<Producto> obtenerProductosPorCategoria(@PathVariable(value = "categoriaId") Long categoriaId) {
-        Categoria categoria = categoriaService.findCategoria(categoriaId);
-        return productoService.findProductosByCategoria(categoriaService.transform(categoria));
+    public List<ProductoModel> obtenerProductosPorCategoria(@PathVariable(value = "categoriaId") Long categoriaId) {
+        CategoriaModel categoriaModel = categoriaService.findCategoria(categoriaId);
+        return productoService.findProductosByCategoria(categoriaModel);
     }
-
+    
     @GetMapping("/products/{id}")
-    public Producto obtenerProductoPorId(@PathVariable(value = "id") Long id) {
+    public ProductoModel obtenerProductoPorId(@PathVariable(value = "id") Long id) {
         return productoService.findProducto(id);
     }
+    
+    @GetMapping("/products")
+    public List<ProductoModel> obtenerProductos() {
+        return productoService.listProductos();
+    }
 
-    @PutMapping("/products/{id}")
-    public Producto actualizarProducto(@RequestBody ProductoModel productoActualizado) {
+    @PutMapping("/products")
+    public ProductoModel actualizarProducto(@RequestBody ProductoModel productoActualizado) {
         return productoService.updateProducto(productoActualizado);
     }
 

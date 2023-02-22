@@ -7,10 +7,11 @@ import com.example.demo.model.CategoriaModel;
 import com.example.demo.model.ProductoModel;
 
 public interface ProductoService {
-	public abstract Producto addProducto(ProductoModel productoModel);
-	public abstract List<Producto> findProductosByCategoria(CategoriaModel categoriaModel);
-	public abstract Producto findProducto(Long id);
-	public abstract Producto updateProducto(ProductoModel productoModel);
+	public abstract ProductoModel addProducto(ProductoModel productoModel);
+	public abstract List<ProductoModel> listProductos();
+	public abstract List<ProductoModel> findProductosByCategoria(CategoriaModel categoriaModel);
+	public abstract ProductoModel findProducto(Long id);
+	public abstract ProductoModel updateProducto(ProductoModel productoModel);
 	public abstract void removeProducto(Long id);
 	public abstract Producto transform(ProductoModel productoModel);
 	public abstract ProductoModel transform(Producto producto);

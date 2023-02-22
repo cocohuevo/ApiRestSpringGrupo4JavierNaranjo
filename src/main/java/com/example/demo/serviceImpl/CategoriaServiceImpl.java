@@ -25,22 +25,21 @@ public class CategoriaServiceImpl implements CategoriaService {
     @Qualifier("productoRepository")
     private ProductoRepository productoRepository;
 
-    public Categoria addCategoria(CategoriaModel categoriaModel) {
-        return categoriaRepository.save(transform(categoriaModel));
+    public CategoriaModel addCategoria(CategoriaModel categoriaModel) {
+        return transform(categoriaRepository.save(transform(categoriaModel)));
     }
 
-    public Categoria findCategoria(Long id) {
-        return categoriaRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("No se encontró la categoria con ID " + id));
+    public CategoriaModel findCategoria(Long id) {
+        return transform(categoriaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("No se encontró la categoria con ID " + id)));
     }
 
-    public Categoria updateCategoria(CategoriaModel categoriaModel) {
-        return categoriaRepository.save(transform(categoriaModel));
+    public CategoriaModel updateCategoria(CategoriaModel categoriaModel) {
+        return transform(categoriaRepository.save(transform(categoriaModel)));
     }
 
     public void removeCategoria(Long id) {
-        Categoria categoria = findCategoria(id);
-        categoriaRepository.delete(categoria);
+        categoriaRepository.delete(transform(findCategoria(id)));
     }
 
     public void removeProductosByCategoria(CategoriaModel categoriaModel) {
@@ -61,5 +60,9 @@ public class CategoriaServiceImpl implements CategoriaService {
 	public CategoriaModel transform(Categoria categoria) {
 		ModelMapper modelMapper=new ModelMapper();
 		return modelMapper.map(categoria, CategoriaModel.class);
+	}
+
+	public List<CategoriaModel> listCategorias() {
+		return categoriaRepository.findAll().stream().map(x->transform(x)).toList();
 	}
 }

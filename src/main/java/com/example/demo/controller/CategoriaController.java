@@ -1,5 +1,7 @@
 package com.example.demo.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
@@ -25,17 +27,22 @@ public class CategoriaController {
     private CategoriaService categoriaService;
 
     @PostMapping("/categories")
-    public Categoria crearCategoria(@RequestBody CategoriaModel categoriaModel) {
+    public CategoriaModel crearCategoria(@RequestBody CategoriaModel categoriaModel) {
         return categoriaService.addCategoria(categoriaModel);
     }
 
     @GetMapping("/categories/{id}")
-    public Categoria obtenerCategoriaPorId(@PathVariable(value = "id") Long id) {
+    public CategoriaModel obtenerCategoriaPorId(@PathVariable(value = "id") Long id) {
         return categoriaService.findCategoria(id);
+    }
+    
+    @GetMapping("/categories")
+    public List<CategoriaModel> obtenerCategorias() {
+        return categoriaService.listCategorias();
     }
 
     @PutMapping("/categories")
-    public Categoria actualizarCategoria(@RequestBody CategoriaModel categoriaModel) {
+    public CategoriaModel actualizarCategoria(@RequestBody CategoriaModel categoriaModel) {
         return categoriaService.updateCategoria(categoriaModel);
     }
 
@@ -47,8 +54,8 @@ public class CategoriaController {
 
     @DeleteMapping("/categories/{id}/products")
     public ResponseEntity<?> eliminarProductosPorCategoria(@PathVariable(value = "id") Long id) {
-        Categoria categoria = categoriaService.findCategoria(id);
-        categoriaService.removeProductosByCategoria(categoriaService.transform(categoria));
+        CategoriaModel categoriaModel = categoriaService.findCategoria(id);
+        categoriaService.removeProductosByCategoria(categoriaModel);
         return ResponseEntity.ok().build();
     }
 }
