@@ -1,9 +1,13 @@
 package com.example.demo.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 
 @Entity
 public class User {
@@ -18,8 +22,10 @@ public class User {
 	private boolean enable;
 	private String role;
 	private String token;
+	@ManyToMany
+    private List<Producto> favoritos = new ArrayList<>();
 
-	public User(long id, String username, String password, boolean enable, String role, String token) {
+	public User(long id, String username, String password, boolean enable, String role, String token, List<Producto> favoritos) {
 		super();
 		this.id = id;
 		this.username = username;
@@ -27,6 +33,7 @@ public class User {
 		this.enable = enable;
 		this.role = role;
 		this.token = token;
+		this.favoritos = favoritos;
 	}
 
 	public User() {
@@ -80,6 +87,13 @@ public class User {
 	public void setToken(String token) {
 		this.token = token;
 	}
+	public void agregarFavorito(Producto producto) {
+        this.favoritos.add(producto);
+    }
+
+    public List<Producto> getFavoritos() {
+        return favoritos;
+    }
 
 	@Override
 	public String toString() {

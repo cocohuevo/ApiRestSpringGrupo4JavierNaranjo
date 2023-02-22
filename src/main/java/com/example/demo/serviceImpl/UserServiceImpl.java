@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
 import com.example.demo.repository.UserRepository;
 
 @Service("userService")
-public class UserService implements UserDetailsService {
+public class UserServiceImpl implements UserDetailsService {
 
 	@Autowired
 	@Qualifier("userRepository")
@@ -88,4 +88,7 @@ public class UserService implements UserDetailsService {
 
 		return usuarioRepository.findByUsername(username);
 	}
+	public com.example.demo.entity.User findUserByUsername(String username) {
+        return usuarioRepository.findByUsername(username);
+    }
 }

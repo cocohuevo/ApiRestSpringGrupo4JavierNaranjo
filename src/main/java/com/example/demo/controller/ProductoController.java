@@ -16,10 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.entity.Categoria;
 import com.example.demo.entity.Producto;
+import com.example.demo.entity.User;
 import com.example.demo.model.CategoriaModel;
 import com.example.demo.model.ProductoModel;
 import com.example.demo.service.CategoriaService;
 import com.example.demo.service.ProductoService;
+import com.example.demo.serviceImpl.UserServiceImpl;
 
 @RestController
 @RequestMapping("/api")
@@ -28,6 +30,10 @@ public class ProductoController {
     @Autowired
     @Qualifier("productoService")
     private ProductoService productoService;
+    
+    @Autowired
+    @Qualifier("userService")
+    private UserServiceImpl userService;
     
     @Autowired
     @Qualifier("categoriaService")
@@ -65,4 +71,14 @@ public class ProductoController {
         productoService.removeProducto(id);
         return ResponseEntity.ok().build();
     }
+    
+    @PostMapping("/users/{username}/favorites/{productId}")
+    public ResponseEntity<?> agregarFavorito(@PathVariable(value = "username") String username, @PathVariable(value = "productId") Long productId) {
+        User user = userService.findUsuario(username);
+        ProductoModel productoModel = productoService.findProducto(productId);
+        user.agregarFavorito(productoService.transform(productoModel));
+        return ResponseEntity.ok().build();
+    }
+
+    
 }

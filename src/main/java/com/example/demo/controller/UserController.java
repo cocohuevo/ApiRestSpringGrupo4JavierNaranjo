@@ -12,13 +12,17 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.entity.User;
-import com.example.demo.serviceImpl.UserService;
+import com.example.demo.model.ProductoModel;
+import com.example.demo.service.ProductoService;
+import com.example.demo.serviceImpl.UserServiceImpl;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -31,7 +35,11 @@ public class UserController {
 
 	@Autowired
 	@Qualifier("userService")
-	private UserService userService;
+	private UserServiceImpl userService;
+	
+	@Autowired
+	@Qualifier("productoService")
+	private ProductoService productoService;
 
 	@PostMapping("/login")
 	public com.example.demo.entity.User login(@RequestParam("user") String username,
@@ -63,6 +71,12 @@ public class UserController {
 	@PostMapping("/register")
 	public User saveUser(@RequestBody User user) {
 		return userService.registrar(user);
+	}
+	
+	@GetMapping("/users/{username}/favoritos")
+	public List<ProductoModel> obtenerFavoritos(@PathVariable(value = "username") String username) {
+	    User user = userService.findUsuario(username);
+	    return user.getFavoritos().stream().map(x -> productoService.transform(x)).collect(Collectors.toList());
 	}
 
 }
