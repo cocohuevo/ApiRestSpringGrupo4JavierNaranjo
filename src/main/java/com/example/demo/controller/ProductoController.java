@@ -72,9 +72,9 @@ public class ProductoController {
         return ResponseEntity.ok().build();
     }
     
-    @PostMapping("/users/{username}/favoritos/{productId}")
-    public ResponseEntity<?> agregarFavorito(@PathVariable(value = "username") String username, @PathVariable(value = "productId") Long productId) {
-        User user = userService.findUsuario(username);
+    @PostMapping("/users/{userId}/favoritos/{productId}")
+    public ResponseEntity<?> agregarFavorito(@PathVariable(value = "userId") long userId, @PathVariable(value = "productId") Long productId) {
+    	User user = userService.findUser(userId);
         ProductoModel productoModel = productoService.findProducto(productId);
         user.agregarFavorito(productoService.transform(productoModel));
         return ResponseEntity.ok().build();

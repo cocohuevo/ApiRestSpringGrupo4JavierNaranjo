@@ -67,15 +67,14 @@ public class UserController {
 
 		return "Bearer " + token;
 	}
-
 	@PostMapping("/register")
 	public User saveUser(@RequestBody User user) {
 		return userService.registrar(user);
 	}
 	
-	@GetMapping("/users/{username}/favoritos")
-	public List<ProductoModel> obtenerFavoritos(@PathVariable(value = "username") String username) {
-	    User user = userService.findUsuario(username);
+	@GetMapping("/users/{idUser}/favoritos")
+	public List<ProductoModel> obtenerFavoritos(@PathVariable(value = "idUser") long idUser) {
+	    User user = userService.findUser(idUser);
 	    return user.getFavoritos().stream().map(x -> productoService.transform(x)).collect(Collectors.toList());
 	}
 

@@ -91,4 +91,8 @@ public class UserServiceImpl implements UserDetailsService {
 	public com.example.demo.entity.User findUserByUsername(String username) {
         return usuarioRepository.findByUsername(username);
     }
+	
+	public com.example.demo.entity.User findUser(long id) {
+		return usuarioRepository.findById(id);
+	}
 }
