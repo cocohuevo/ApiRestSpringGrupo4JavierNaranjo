@@ -49,10 +49,9 @@ public class CategoriaServiceImpl implements CategoriaService {
         if (categoria != null) {
             List<Producto> productos = categoria.getProductos();
             if (productos != null && !productos.isEmpty()) {
-                for (Producto producto : productos) {
-                    producto.setCategoria(null); // Eliminar la relación con la categoría
-                    productoRepository.delete(producto); // Eliminar el producto de la base de datos
-                }
+                productoRepository.deleteAll(productos);
+                categoria.setProductos(null);
+                categoriaRepository.save(categoria);
             }
         }
     }
