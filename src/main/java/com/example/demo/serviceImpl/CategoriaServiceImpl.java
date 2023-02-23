@@ -1,6 +1,7 @@
 package com.example.demo.serviceImpl;
 
 import java.util.List;
+import java.util.Set;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,9 +43,18 @@ public class CategoriaServiceImpl implements CategoriaService {
         categoriaRepository.delete(transform(findCategoria(id)));
     }
 
+    @Override
     public void removeProductosByCategoria(long id) {
-    	Categoria categoria = transform(findCategoria(id));
-    	productoRepository.findByCategoria(categoria).stream().forEach(x->productoRepository.delete(x));
+        Categoria categoria = transform(findCategoria(id));
+        if (categoria != null) {
+            List<Producto> productos = categoria.getProductos();
+            if (productos != null && !productos.isEmpty()) {
+                for (Producto producto : productos) {
+                    producto.setCategoria(null); // Eliminar la relación con la categoría
+                    productoRepository.delete(producto); // Eliminar el producto de la base de datos
+                }
+            }
+        }
     }
 
 	public Categoria transform(CategoriaModel categoriaModel) {
