@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.entity.Producto;
 import com.example.demo.entity.User;
 import com.example.demo.model.ProductoModel;
 import com.example.demo.service.ProductoService;
@@ -71,9 +73,15 @@ public class UserController {
 	}
 	
 	@GetMapping("/users/{idUser}/favoritos")
-	public List<ProductoModel> obtenerFavoritos(@PathVariable(value = "idUser") long idUser) {
-	    User user = userService.findUser(idUser);
-	    return user.getFavoritos().stream().map(x -> productoService.transform(x)).collect(Collectors.toList());
-	}
+    public List<ProductoModel> obtenerFavoritos(@PathVariable("idUser") long idUser) {
+        User user = userService.findUser(idUser);
+        if (user != null) {
+            List<Producto> favoritos = user.getFavoritos();
+            if (favoritos != null) {
+                return favoritos.stream().map(x->productoService.transform(x)).toList();
+            }
+        }
+        return new ArrayList<>();
+    }
 
 }
