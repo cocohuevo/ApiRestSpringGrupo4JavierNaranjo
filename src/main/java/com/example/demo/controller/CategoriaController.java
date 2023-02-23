@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,17 +21,17 @@ import com.example.demo.service.CategoriaService;
 
 @RestController
 @RequestMapping("/api")
+@PreAuthorize("hasRole('ROLE_ADMIN')")
 public class CategoriaController {
 
     @Autowired
     @Qualifier("categoriaService")
     private CategoriaService categoriaService;
-
     @PostMapping("/categories")
     public CategoriaModel crearCategoria(@RequestBody CategoriaModel categoriaModel) {
         return categoriaService.addCategoria(categoriaModel);
     }
-
+    
     @GetMapping("/categories/{id}")
     public CategoriaModel obtenerCategoriaPorId(@PathVariable(value = "id") Long id) {
         return categoriaService.findCategoria(id);

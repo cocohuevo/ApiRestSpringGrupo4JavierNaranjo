@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -31,6 +32,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
 @RestController
+@PreAuthorize("hasRole('ROLE_ADMIN')")
 public class UserController {
 
 	@Autowired
@@ -72,7 +74,7 @@ public class UserController {
 	public User saveUser(@RequestBody User user) {
 		return userService.registrar(user);
 	}
-	
+	@PreAuthorize("hasRole('ROLE_USER')")
 	@GetMapping("/users/{idUser}/favoritos")
     public List<ProductoModel> obtenerFavoritos(@PathVariable("idUser") long idUser) {
         User user = userService.findUser(idUser);
@@ -84,7 +86,7 @@ public class UserController {
         }
         return new ArrayList<>();
     }
-	
+	@PreAuthorize("hasRole('ROLE_USER')")
 	@PostMapping("/users/{idUser}/favoritos/{idProducto}")
     public ResponseEntity<?> agregarFavorito(@PathVariable Long idUser, @PathVariable Long idProducto) {
         com.example.demo.entity.User usuario = userService.findUser(idUser);
