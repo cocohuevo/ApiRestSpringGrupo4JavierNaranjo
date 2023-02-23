@@ -45,10 +45,12 @@ public class ProductoServiceImpl implements ProductoService{
         productoRepository.delete(transform(findProducto(id)));
     }
 
-	public Producto transform(ProductoModel productoModel) {
-		ModelMapper modelMapper=new ModelMapper();
-		return modelMapper.map(productoModel, Producto.class);
-	}	
+    public Producto transform(ProductoModel productoModel) {
+        ModelMapper modelMapper=new ModelMapper();
+        Producto res = modelMapper.map(productoModel, Producto.class);
+        res.setCategoria(categoriaService.transform(categoriaService.findCategoria(productoModel.getCategoria())));
+        return res;
+    }	
 
 	public ProductoModel transform(Producto producto) {
 		ModelMapper modelMapper=new ModelMapper();
