@@ -45,9 +45,11 @@ public class CategoriaServiceImpl implements CategoriaService {
     public void removeProductosByCategoria(CategoriaModel categoriaModel) {
         List<Producto> productos = transform(categoriaModel).getProductos();
         transform(categoriaModel).setProductos(null);
-        for (Producto producto : productos) {
-            producto.setCategoria(null);
-            productoRepository.delete(producto);
+        if (productos != null) {
+            for (Producto producto : productos) {
+                producto.setCategoria(null);
+                productoRepository.delete(producto);
+            }
         }
         categoriaRepository.delete(transform(categoriaModel));
     }

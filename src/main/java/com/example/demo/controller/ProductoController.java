@@ -13,9 +13,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.example.demo.entity.Categoria;
-import com.example.demo.entity.Producto;
 import com.example.demo.entity.User;
 import com.example.demo.model.CategoriaModel;
 import com.example.demo.model.ProductoModel;
@@ -74,7 +71,7 @@ public class ProductoController {
     
     @PostMapping("/users/{userId}/favoritos/{productId}")
     public ResponseEntity<?> agregarFavorito(@PathVariable(value = "userId") long userId, @PathVariable(value = "productId") Long productId) {
-    	User user = userService.findUser(userId);
+        User user = userService.findUser(userId);
         ProductoModel productoModel = productoService.findProducto(productId);
         user.agregarFavorito(productoService.transform(productoModel));
         return ResponseEntity.ok().build();

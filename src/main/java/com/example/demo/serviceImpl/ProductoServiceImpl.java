@@ -6,12 +6,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-
-import com.example.demo.entity.Categoria;
 import com.example.demo.entity.Producto;
 import com.example.demo.model.CategoriaModel;
 import com.example.demo.model.ProductoModel;
-import com.example.demo.repository.CategoriaRepository;
 import com.example.demo.repository.ProductoRepository;
 import com.example.demo.service.CategoriaService;
 import com.example.demo.service.ProductoService;

@@ -42,16 +42,14 @@ public class UserController {
 	private ProductoService productoService;
 
 	@PostMapping("/login")
-	public com.example.demo.entity.User login(@RequestParam("user") String username,
-			@RequestParam("password") String pwd) {
-		Authentication authentication = authenticationManager
-				.authenticate(new UsernamePasswordAuthenticationToken(username, pwd));
-		SecurityContextHolder.getContext().setAuthentication(authentication);
-		com.example.demo.entity.User usuario = userService.findUsuario(username);
-		String token = getJWTToken(username);
-		usuario.setToken(token);
-		return usuario;
-
+	public com.example.demo.entity.User login(@RequestBody User user) {
+	    Authentication authentication = authenticationManager
+	            .authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
+	    SecurityContextHolder.getContext().setAuthentication(authentication);
+	    com.example.demo.entity.User usuario = userService.findUsuario(user.getUsername());
+	    String token = getJWTToken(user.getUsername());
+	    usuario.setToken(token);
+	    return usuario;
 	}
 
 	private String getJWTToken(String username) {
