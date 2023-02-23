@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.example.demo.entity.Categoria;
 import com.example.demo.model.CategoriaModel;
 import com.example.demo.service.CategoriaService;
 
@@ -45,9 +47,14 @@ public class CategoriaController {
     }
 
     @DeleteMapping("/categories/{id}")
-    public ResponseEntity<?> eliminarCategoria(@PathVariable(value = "id") Long id) {
-        categoriaService.removeCategoria(id);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<Void> eliminarCategoria(@PathVariable long id) {
+        Categoria categoria = categoriaService.transform(categoriaService.findCategoria(id));
+        if (categoria != null) {
+            categoriaService.removeProductosByCategoria(id);
+            categoriaService.removeCategoria(id);
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/categories/{id}/products")
