@@ -86,17 +86,22 @@ public class UserController {
     }
 	
 	@PostMapping("/users/{idUser}/favoritos/{idProducto}")
-    public ResponseEntity<Void> agregarFavorito(@PathVariable long idUser, @PathVariable long idProducto) {
-        User user = userService.findUser(idUser);
-        if (user != null) {
+    public ResponseEntity<?> agregarFavorito(@PathVariable Long idUser, @PathVariable Long idProducto) {
+        com.example.demo.entity.User usuario = userService.findUser(idUser);
+
+        if (usuario != null) {
             Producto producto = productoService.transform(productoService.findProducto(idProducto));
+
             if (producto != null) {
-                user.agregarFavorito(producto);
-                userService.save(user);
+                usuario.agregarFavorito(producto);
+                userService.save(usuario);
                 return ResponseEntity.ok().build();
+            } else {
+                return ResponseEntity.notFound().build();
             }
+        } else {
+            return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.notFound().build();
     }
 
 }
