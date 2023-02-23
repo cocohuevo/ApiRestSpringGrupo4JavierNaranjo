@@ -95,4 +95,9 @@ public class UserServiceImpl implements UserDetailsService {
 	public com.example.demo.entity.User findUser(long id) {
 		return usuarioRepository.findById(id);
 	}
+	
+	
+	public com.example.demo.entity.User save(com.example.demo.entity.User user) {
+	    return usuarioRepository.save(user);
+	}
 }

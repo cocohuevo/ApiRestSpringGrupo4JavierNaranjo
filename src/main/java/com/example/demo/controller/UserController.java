@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -83,5 +84,19 @@ public class UserController {
         }
         return new ArrayList<>();
     }
+	
+	@PostMapping("/users/{idUser}/favoritos/{idProducto}")
+	public ResponseEntity<Void> agregarFavorito(@PathVariable long idUser, @PathVariable long idProducto) {
+	    User user = userService.findUser(idUser);
+	    if (user != null) {
+	        Producto producto = productoService.transform(productoService.findProducto(idProducto));
+	        if (producto != null) {
+	            user.getFavoritos().add(producto);
+	            userService.save(user);
+	            return ResponseEntity.ok().build();
+	        }
+	    }
+	    return ResponseEntity.notFound().build();
+	}
 
 }
