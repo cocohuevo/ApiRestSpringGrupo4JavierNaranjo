@@ -104,6 +104,4 @@ public class User {
 				+ role + ", token=" + token + "]";
 	}
 	
-	
-
 }
