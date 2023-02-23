@@ -6,14 +6,14 @@ public class ProductoModel {
     private String nombre;
     private String descripcion;
     private Double precio;
-    private Long categoriaId;
+    private long categoriaId;
     
     
 	public ProductoModel() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public ProductoModel(Long id, String nombre, String descripcion, Double precio, Long categoriaId) {
+	public ProductoModel(Long id, String nombre, String descripcion, Double precio, long categoriaId) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
@@ -45,10 +45,10 @@ public class ProductoModel {
 	public void setPrecio(Double precio) {
 		this.precio = precio;
 	}
-	public Long getCategoriaId() {
+	public long getCategoria() {
 		return categoriaId;
 	}
-	public void setCategoriaId(Long categoriaId) {
+	public void setCategoriaId(long categoriaId) {
 		this.categoriaId = categoriaId;
 	}
 	@Override

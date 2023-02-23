@@ -42,16 +42,9 @@ public class CategoriaServiceImpl implements CategoriaService {
         categoriaRepository.delete(transform(findCategoria(id)));
     }
 
-    public void removeProductosByCategoria(CategoriaModel categoriaModel) {
-        List<Producto> productos = transform(categoriaModel).getProductos();
-        transform(categoriaModel).setProductos(null);
-        if (productos != null) {
-            for (Producto producto : productos) {
-                producto.setCategoria(null);
-                productoRepository.delete(producto);
-            }
-        }
-        categoriaRepository.delete(transform(categoriaModel));
+    public void removeProductosByCategoria(long id) {
+    	Categoria categoria = transform(findCategoria(id));
+    	productoRepository.findByCategoria(categoria).stream().forEach(x->productoRepository.delete(x));
     }
 
 	public Categoria transform(CategoriaModel categoriaModel) {

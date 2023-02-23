@@ -37,7 +37,7 @@ public class ProductoController {
     private CategoriaService categoriaService;
     
     @PostMapping("/categories/{categoriaId}/product")
-    public ProductoModel crearProducto(@PathVariable(value = "categoriaId") Long categoriaId, @RequestBody ProductoModel productoModel) {
+    public ProductoModel crearProducto(@PathVariable(value = "categoriaId") long categoriaId, @RequestBody ProductoModel productoModel) {
         productoModel.setCategoriaId(categoriaId);
         return productoService.addProducto(productoModel);
     }

@@ -12,7 +12,7 @@ public interface CategoriaService {
 	public abstract CategoriaModel findCategoria(Long id);
 	public abstract CategoriaModel updateCategoria(CategoriaModel categoriaModel);
 	public abstract void removeCategoria(Long id);
-	public abstract void removeProductosByCategoria(CategoriaModel categoriaModel);
+	public abstract void removeProductosByCategoria(long id);
 	public abstract Categoria transform(CategoriaModel categoriaModel);
 	public abstract CategoriaModel transform(Categoria categoria);
     
