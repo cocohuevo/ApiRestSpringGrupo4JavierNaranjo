@@ -41,7 +41,7 @@ public class CategoriaController {
     public List<CategoriaModel> obtenerCategorias() {
         return categoriaService.listCategorias();
     }
-
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/categories")
     public CategoriaModel actualizarCategoria(@RequestBody CategoriaModel categoriaModel) {
         return categoriaService.updateCategoria(categoriaModel);
