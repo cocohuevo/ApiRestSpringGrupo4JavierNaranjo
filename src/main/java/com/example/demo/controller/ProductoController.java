@@ -37,39 +37,40 @@ public class ProductoController {
     @Autowired
     @Qualifier("categoriaService")
     private CategoriaService categoriaService;
-    
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/categories/{categoriaId}/product")
     public ProductoModel crearProducto(@PathVariable(value = "categoriaId") long categoriaId, @RequestBody ProductoModel productoModel) {
         productoModel.setCategoriaId(categoriaId);
         return productoService.addProducto(productoModel);
     }
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
     @GetMapping("/categories/{categoriaId}/products")
     public List<ProductoModel> obtenerProductosPorCategoria(@PathVariable(value = "categoriaId") Long categoriaId) {
         CategoriaModel categoriaModel = categoriaService.findCategoria(categoriaId);
         return productoService.findProductosByCategoria(categoriaModel);
     }
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
     @GetMapping("/products/{id}")
     public ProductoModel obtenerProductoPorId(@PathVariable(value = "id") Long id) {
         return productoService.findProducto(id);
     }
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
     @GetMapping("/products")
     public List<ProductoModel> obtenerProductos() {
         return productoService.listProductos();
     }
-
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/products")
     public ProductoModel actualizarProducto(@RequestBody ProductoModel productoActualizado) {
         return productoService.updateProducto(productoActualizado);
     }
-
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/products/{id}")
     public ResponseEntity<?> eliminarProducto(@PathVariable(value = "id") Long id) {
         productoService.removeProducto(id);
         return ResponseEntity.ok().build();
     }
-    
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
     @PostMapping("/users/{userId}/favoritos/{productId}")
     public ResponseEntity<?> agregarFavorito(@PathVariable(value = "userId") long userId, @PathVariable(value = "productId") Long productId) {
         User user = userService.findUser(userId);

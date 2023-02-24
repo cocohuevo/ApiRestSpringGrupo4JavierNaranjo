@@ -21,7 +21,6 @@ import com.example.demo.service.CategoriaService;
 
 @RestController
 @RequestMapping("/api")
-@PreAuthorize("hasRole('ROLE_ADMIN')")
 public class CategoriaController {
 
     @Autowired
@@ -31,12 +30,12 @@ public class CategoriaController {
     public CategoriaModel crearCategoria(@RequestBody CategoriaModel categoriaModel) {
         return categoriaService.addCategoria(categoriaModel);
     }
-    
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
     @GetMapping("/categories/{id}")
     public CategoriaModel obtenerCategoriaPorId(@PathVariable(value = "id") Long id) {
         return categoriaService.findCategoria(id);
     }
-    
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
     @GetMapping("/categories")
     public List<CategoriaModel> obtenerCategorias() {
         return categoriaService.listCategorias();
@@ -46,7 +45,7 @@ public class CategoriaController {
     public CategoriaModel actualizarCategoria(@RequestBody CategoriaModel categoriaModel) {
         return categoriaService.updateCategoria(categoriaModel);
     }
-
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/categories/{id}")
     public ResponseEntity<Void> eliminarCategoria(@PathVariable long id) {
         Categoria categoria = categoriaService.transform(categoriaService.findCategoria(id));
@@ -57,7 +56,7 @@ public class CategoriaController {
         }
         return ResponseEntity.notFound().build();
     }
-
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/categories/{id}/products")
     public ResponseEntity<?> eliminarProductosPorCategoria(@PathVariable(value = "id") Long id) {
         categoriaService.removeProductosByCategoria(id);

@@ -32,7 +32,6 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
 @RestController
-@PreAuthorize("hasRole('ROLE_ADMIN')")
 public class UserController {
 
 	@Autowired
@@ -74,7 +73,7 @@ public class UserController {
 	public User saveUser(@RequestBody User user) {
 		return userService.registrar(user);
 	}
-	@PreAuthorize("hasRole('ROLE_USER')")
+	@PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
 	@GetMapping("/users/{idUser}/favoritos")
     public List<ProductoModel> obtenerFavoritos(@PathVariable("idUser") long idUser) {
         User user = userService.findUser(idUser);
@@ -86,7 +85,7 @@ public class UserController {
         }
         return new ArrayList<>();
     }
-	@PreAuthorize("hasRole('ROLE_USER')")
+	@PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
 	@PostMapping("/users/{idUser}/favoritos/{idProducto}")
     public ResponseEntity<?> agregarFavorito(@PathVariable Long idUser, @PathVariable Long idProducto) {
         com.example.demo.entity.User usuario = userService.findUser(idUser);
