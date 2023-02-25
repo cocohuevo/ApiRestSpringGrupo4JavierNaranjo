@@ -2,12 +2,10 @@ package com.example.demo.controller;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,12 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.entity.Producto;
-import com.example.demo.entity.User;
 import com.example.demo.model.CategoriaModel;
 import com.example.demo.model.ProductoModel;
-import com.example.demo.repository.ProductoRepository;
-import com.example.demo.repository.UserRepository;
 import com.example.demo.service.CategoriaService;
 import com.example.demo.service.ProductoService;
 import com.example.demo.serviceImpl.UserServiceImpl;
@@ -42,13 +36,6 @@ public class ProductoController {
     @Autowired
     @Qualifier("categoriaService")
     private CategoriaService categoriaService;
-    
-    @Autowired
-    @Qualifier("userRepository")
-    private UserRepository userRepository;
-    @Autowired
-    @Qualifier("productoRepository")
-    private ProductoRepository productoRepository;
     
     @PostMapping("/categories/{categoriaId}/product")
     public ProductoModel crearProducto(@PathVariable(value = "categoriaId") long categoriaId, @RequestBody ProductoModel productoModel) {
@@ -77,13 +64,6 @@ public class ProductoController {
         productoService.removeProducto(id);
         return ResponseEntity.ok().build();
     }
-    /*@PostMapping("/users/{userId}/favoritos/{productId}")
-    public ResponseEntity<?> agregarFavorito(@PathVariable(value = "userId") long userId, @PathVariable(value = "productId") Long productId) {
-        User user = userService.findUser(userId);
-        ProductoModel productoModel = productoService.findProducto(productId);
-        user.agregarFavorito(productoService.transform(productoModel));
-        return ResponseEntity.ok().build();
-    }*/
     
     @PostMapping("/users/{userId}/favoritos/{productId}")
     public ResponseEntity<String> agregarFavorito(@PathVariable Long userId, @PathVariable Long productId) {
