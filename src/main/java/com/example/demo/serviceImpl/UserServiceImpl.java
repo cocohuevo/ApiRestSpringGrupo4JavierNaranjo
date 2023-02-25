@@ -1,6 +1,7 @@
 package com.example.demo.serviceImpl;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.entity.Producto;
+import com.example.demo.repository.ProductoRepository;
 import com.example.demo.repository.UserRepository;
 
 @Service("userService")
@@ -24,7 +27,11 @@ public class UserServiceImpl implements UserDetailsService {
 	@Autowired
 	@Qualifier("userRepository")
 	private UserRepository usuarioRepository;
-
+	
+	@Autowired
+	@Qualifier("productoRepository")
+	private ProductoRepository productoRepository;
+	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		com.example.demo.entity.User usuario = usuarioRepository.findByUsername(username);
@@ -100,4 +107,27 @@ public class UserServiceImpl implements UserDetailsService {
 	public com.example.demo.entity.User save(com.example.demo.entity.User user) {
 	    return usuarioRepository.save(user);
 	}
+	public boolean agregarFavorito(Long userId, Long productId) {
+	    Optional<com.example.demo.entity.User> userOptional = usuarioRepository.findById(userId);
+	    if (userOptional.isPresent()) {
+	    	com.example.demo.entity.User user = userOptional.get();
+
+	        Optional<Producto> productoOptional = productoRepository.findById(productId);
+	        if (productoOptional.isPresent()) {
+	            Producto producto = productoOptional.get();
+
+	            List<Producto> favoritos = user.getFavoritos();
+	            if (favoritos.contains(producto)) {
+	                return false;
+	            } else {
+	                favoritos.add(producto);
+	                usuarioRepository.save(user);
+	                return true;
+	            }
+	        }
+	    }
+	    return false;
+	}
+
+	
 }
