@@ -73,7 +73,6 @@ public class UserController {
 	public User saveUser(@RequestBody User user) {
 		return userService.registrar(user);
 	}
-	@PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
 	@GetMapping("/users/{idUser}/favoritos")
     public List<ProductoModel> obtenerFavoritos(@PathVariable("idUser") long idUser) {
         User user = userService.findUser(idUser);
@@ -85,7 +84,6 @@ public class UserController {
         }
         return new ArrayList<>();
     }
-	@PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
 	@PostMapping("/users/{idUser}/favoritos/{idProducto}")
     public ResponseEntity<?> agregarFavorito(@PathVariable Long idUser, @PathVariable Long idProducto) {
         com.example.demo.entity.User usuario = userService.findUser(idUser);
