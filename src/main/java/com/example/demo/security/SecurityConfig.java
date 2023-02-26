@@ -14,12 +14,26 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig{
-
+/*
+ public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http.csrf().disable()
+            .addFilterBefore(new JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
+            .authorizeRequests()
+            .antMatchers("/api/auth/**").permitAll()
+            .antMatchers("/api/**").authenticated()
+            .anyRequest().permitAll()
+            .and()
+            .rememberMe().tokenValiditySeconds(604800); // 1 semana (en segundos)
+        return http.build();
+    }
+ * 
+ * */
 	@Bean
 		public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 			http.csrf().disable().addFilterBefore(new JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class).
 			authorizeHttpRequests().
-			requestMatchers("/api/**").authenticated().anyRequest().permitAll();
+			requestMatchers("/api/**").authenticated().anyRequest().permitAll().and()
+            .rememberMe().tokenValiditySeconds(604800);
 			return http.build();
 		}
 	
